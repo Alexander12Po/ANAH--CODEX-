@@ -179,7 +179,6 @@ export async function manejarMensajeEliminado(sock, msg) {
 🧹 *Eliminado por:* ${esMismaPersona ? 'el mismo remitente' : '@' + eliminadoPorId.split('@')[0]}
 📦 *Tipo:* ${original.tipo}${esTextoPlano ? `\n\n💬 *Contenido:*\n${original.texto}` : ''}
 
-✨ Yo lo vi todo, aquí no se esconde nada 💅
 ━━━━━━━━━━━━━━━━━━━━`
 
     const mentions = [original.senderId]
