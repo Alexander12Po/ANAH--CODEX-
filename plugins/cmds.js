@@ -7,77 +7,94 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  command: ['cmds', 'consultas', 'help', 'bella', 'yazu'],
+  command: ['cmds', 'consultas'],
   description: 'Muestra las consultas disponibles (DNI, SOAT, placa, árbol genealógico y más)',
   exec: async ({ sock, from, msg }) => {
 
-    const texto = `╔════════════════════╗
-║ 💕 ${botConfig.botName}
+    const texto = `╔══════════════════════╗
+║ 💕 *${botConfig.botName}*
 ║ 🍀 CONSULTAS BELLA
-╚════════════════════╝
+╚══════════════════════╝
 
-╭──── 🌸 CONSULTAS ────╮
-│ 🌳 ${botConfig.prefix}ag
-│ ➜ Consulta el árbol genealógico y relaciones familiares por DNI
-│
-│ 🏠 ${botConfig.prefix}dir
-│ ➜ Consulta el historial de direcciones de una persona por su DNI
-│
-│ 🪪 ${botConfig.prefix}dni
-│ ➜ Consulta datos detallados de una persona por su DNI (Perú)
-│
-│ 🖼️ ${botConfig.prefix}dnit
-│ ➜ Ficha completa de DNI con fotos, domicilio y ubigeos
-│
-│ 📸 ${botConfig.prefix}dnivel
-│ ➜ Consulta DNI con imágenes (formato rápido)
-│
-│ 📷 ${botConfig.prefix}dniv
-│ ➜ Consulta DNI con imágenes (formato PNG)
-│
-│ 👤 ${botConfig.prefix}nm
-│ ➜ Busca personas por Nombres y Apellidos
-│
-│ 🚗 ${botConfig.prefix}placa
-│ ➜ Consulta información de un vehículo por su número de placa
-│
-│ 📋 ${botConfig.prefix}plat
-│ ➜ Ficha técnica completa del vehículo (series, propietarios)
-│
-│ 📂 ${botConfig.prefix}rfm
-│ ➜ Consulta RFM
-│
-│ 🛡️ ${botConfig.prefix}soat
-│ ➜ Consulta el estado y vigencia del SOAT de un vehículo por su placa
-│
-│ 💼 ${botConfig.prefix}sueldo
-│ ➜ Consulta el historial de sueldos y empleos de una persona por su DNI
-│
-│ 📱 ${botConfig.prefix}telp
-│ ➜ Consulta Teléfono
-│
-│ 📲 ${botConfig.prefix}telpx
-│ ➜ Consulta Teléfono (variante extendida)
-│
-│ 🚨 ${botConfig.prefix}den
-│ ➜ Resumen de denuncias (condición e intervención) por DNI
-│
-│ 📄 ${botConfig.prefix}denuncias
-│ ➜ Consulta denuncias policiales con documentos por DNI
-│
-│ 🚔 ${botConfig.prefix}denpla
-│ ➜ Consulta denuncias policiales por placa
-│
-│ ⚖️ ${botConfig.prefix}rqh
-│ ➜ Consulta requisitorias y procesos judiciales por DNI
-│
-│ 👁️ ${botConfig.prefix}vv
-│ ➜ Descarga fotos y videos enviados para ver una sola vez
-│
-╰──────────────────────╯
+┏━━━「 🪪 *DOCUMENTOS* 」━━━┓
+┃
+┃ 🪪 *${botConfig.prefix}dni*
+┃    ➜ Datos detallados por DNI
+┃
+┃ 🖼️ *${botConfig.prefix}dnit*
+┃    ➜ Ficha completa con fotos y ubigeos
+┃
+┃ 📸 *${botConfig.prefix}dnivel*
+┃    ➜ DNI con imágenes (rápido)
+┃
+┃ 📷 *${botConfig.prefix}dniv*
+┃    ➜ DNI con imágenes (PNG)
+┃
+┃ 🌳 *${botConfig.prefix}ag*
+┃    ➜ Árbol genealógico y familiares
+┃
+┃ 🏠 *${botConfig.prefix}dir*
+┃    ➜ Historial de direcciones
+┃
+┃ 👤 *${botConfig.prefix}nm*
+┃    ➜ Buscar por nombres y apellidos
+┃
+┗━━━━━━━━━━━━━━━━━━━━━┛
+
+┏━━━「 🚗 *VEHÍCULOS* 」━━━┓
+┃
+┃ 🚗 *${botConfig.prefix}placa*
+┃    ➜ Información por número de placa
+┃
+┃ 📋 *${botConfig.prefix}plat*
+┃    ➜ Ficha técnica completa
+┃
+┃ 🛡️ *${botConfig.prefix}soat*
+┃    ➜ Estado y vigencia del SOAT
+┃
+┗━━━━━━━━━━━━━━━━━━━━━┛
+
+┏━━━「 📱 *CONTACTO* 」━━━┓
+┃
+┃ 📱 *${botConfig.prefix}telp*
+┃    ➜ Consulta de teléfono
+┃
+┃ 📲 *${botConfig.prefix}telpx*
+┃    ➜ Teléfono (variante extendida)
+┃
+┃ 💼 *${botConfig.prefix}sueldo*
+┃    ➜ Historial de sueldos y empleos
+┃
+┃ 📂 *${botConfig.prefix}rfm*
+┃    ➜ Consulta RFM
+┃
+┗━━━━━━━━━━━━━━━━━━━━━┛
+
+┏━━━「 ⚖️ *LEGAL* 」━━━┓
+┃
+┃ 🚨 *${botConfig.prefix}den*
+┃    ➜ Resumen de denuncias por DNI
+┃
+┃ 📄 *${botConfig.prefix}denuncias*
+┃    ➜ Denuncias policiales con documentos
+┃
+┃ 🚔 *${botConfig.prefix}denpla*
+┃    ➜ Denuncias policiales por placa
+┃
+┃ ⚖️ *${botConfig.prefix}rqh*
+┃    ➜ Requisitorias y procesos judiciales
+┃
+┗━━━━━━━━━━━━━━━━━━━━━┛
+
+┏━━━「 ✨ *EXTRAS* 」━━━┓
+┃
+┃ 👁️ *${botConfig.prefix}vv*
+┃    ➜ Ver fotos/videos de una sola vez
+┃
+┗━━━━━━━━━━━━━━━━━━━━━┛
 
 ╭───────────────────╮
-│ 💖 ${botConfig.botName}
+│ 💖 *${botConfig.botName}*
 │ ✨ Siempre para ti
 ╰───────────────────╯`
 
