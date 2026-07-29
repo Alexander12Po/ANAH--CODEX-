@@ -14,7 +14,7 @@ import NodeCache from 'node-cache'
 import { handler } from './handler.js'
 import { botConfig } from './config.js'
 import { cachearMensaje, manejarMensajeEliminado } from './plugins/antidelete.js'
-import { useMongoAuthState, listRegisteredSessions } from './mongoAuthState.js'
+import { useMongoAuthState, listRegisteredSessions, clearMongoAuthState } from './mongoAuthState.js'
 import { restoreAllSessions } from './sessionManager.js'
 
 // -----------------------------------------------------------------------
@@ -140,8 +140,15 @@ async function startBot() {
       const statusCode = new Boom(lastDisconnect?.error)?.output?.statusCode
       const shouldReconnect = statusCode !== DisconnectReason.loggedOut
       console.log('❌ Conexión cerrada. Código:', statusCode, '| Motivo:', lastDisconnect?.error?.message || lastDisconnect?.error)
-      console.log(shouldReconnect ? 'Reconectando...' : 'Sesión cerrada, se necesita vincular de nuevo.')
-      if (shouldReconnect) startBot()
+
+      if (shouldReconnect) {
+        console.log('Reconectando...')
+        startBot()
+      } else {
+        console.log('🔒 Sesión cerrada (logout). Borrando datos viejos y generando QR nuevo...')
+        await clearMongoAuthState('anahi')
+        startBot()
+      }
     } else if (connection === 'open') {
       console.log(`✅ ${botConfig.botName} conectado correctamente`)
     }
