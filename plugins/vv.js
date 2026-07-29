@@ -1,7 +1,7 @@
 import { downloadMediaMessage } from '@whiskeysockets/baileys'
 
 export default {
-  command: ['vv', 'viewonce', 'ver', 'luz'],
+  command: ['vv', 'viewonce'],
   description: 'Descarga fotos y videos enviados para ver una sola vez',
   exec: async ({ sock, from, msg }) => {
     // Buscar si el usuario está respondiendo a otro mensaje
@@ -47,9 +47,11 @@ export default {
       );
     }
 
-    try {
-      await sock.sendMessage(from, { text: '⏳ *Desbloqueando archivo...*' }, { quoted: msg });
+    // Reacción en vez de mensaje de texto: da feedback de "procesando"
+    // sin dejar un mensaje de estado suelto que después se ve feo.
+    await sock.sendMessage(from, { react: { text: '🔓', key: msg.key } }).catch(() => {});
 
+    try {
       // Reconstruimos el mensaje para que Baileys sepa qué descargar
       const contextInfo = msg.message?.extendedTextMessage?.contextInfo;
       const targetMessage = {
@@ -64,7 +66,7 @@ export default {
       // Descargamos el archivo (buffer)
       const buffer = await downloadMediaMessage(targetMessage, "buffer", {});
 
-      // Enviamos el archivo de vuelta como multimedia normal
+      // Enviamos el archivo de vuelta como multimedia normal, en un solo mensaje
       if (isImage) {
         return sock.sendMessage(
           from, 
@@ -78,18 +80,16 @@ export default {
           { quoted: msg }
         );
       } else if (isAudio) {
-        await sock.sendMessage(
-          from,
-          { text: '🔓 *Audio desbloqueado con éxito*' },
-          { quoted: msg }
-        );
+        // El tipo audio de WhatsApp no admite caption, así que este
+        // caso sí necesita 2 mensajes por limitación de la plataforma.
         return sock.sendMessage(
           from,
           {
             audio: buffer,
             mimetype: viewOnceMsg.audioMessage.mimetype || 'audio/ogg; codecs=opus',
             ptt: viewOnceMsg.audioMessage.ptt || false
-          }
+          },
+          { quoted: msg }
         );
       }
 
