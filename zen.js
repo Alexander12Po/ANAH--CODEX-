@@ -13,7 +13,6 @@ import QRCode from 'qrcode'
 import NodeCache from 'node-cache'
 import { handler } from './handler.js'
 import { botConfig } from './config.js'
-import { handleGroupParticipantsUpdate } from './plugins/bienvenida.js'
 import { cachearMensaje, manejarMensajeEliminado } from './plugins/antidelete.js'
 import { useMongoAuthState, listRegisteredSessions } from './mongoAuthState.js'
 import { restoreAllSessions } from './sessionManager.js'
@@ -165,14 +164,6 @@ async function startBot() {
       await handler(sock, m)
     } catch (err) {
       console.error('Error en handler:', err)
-    }
-  })
-
-  sock.ev.on('group-participants.update', async (update) => {
-    try {
-      await handleGroupParticipantsUpdate(sock, update)
-    } catch (err) {
-      console.error('Error en evento de bienvenida:', err)
     }
   })
 }
