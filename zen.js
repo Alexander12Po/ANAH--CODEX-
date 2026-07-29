@@ -82,7 +82,7 @@ async function startBot() {
   // redeploy de Render porque el disco es efímero.
   // Ahora: la sesión se lee/escribe directamente en MongoDB, así que
   // sobrevive a reinicios y redeploys.
-  const { state, saveCreds } = await useMongoAuthState()
+  const { state, saveCreds } = await useMongoAuthState('anahi')
 
   const { version } = await fetchLatestWaWebVersion()
 
