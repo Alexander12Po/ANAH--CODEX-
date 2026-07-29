@@ -11,8 +11,18 @@ export default {
       }, { quoted: msg });
     }
 
-    const jid = `${numero}@s.whatsapp.net`;
-    const cached = global.statusCache?.[jid];
+    const jidNormal = `${numero}@s.whatsapp.net`;
+const jidLid = `${numero}@lid`;
+
+let cached = global.statusCache?.[jidNormal] || global.statusCache?.[jidLid];
+
+// Si no coincide exacto, busca por si el número está contenido en alguna clave
+if (!cached) {
+  const entrada = Object.entries(global.statusCache || {}).find(([key]) =>
+    key.includes(numero)
+  );
+  if (entrada) cached = entrada[1];
+}
 
     if (!cached) {
       return sock.sendMessage(from, {
