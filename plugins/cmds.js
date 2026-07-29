@@ -7,13 +7,13 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  command: ['cmds', 'consultas'],
+  command: ['cmds', 'consultas', 'help', 'bella', 'yazu'],
   description: 'Muestra las consultas disponibles (DNI, SOAT, placa, árbol genealógico y más)',
   exec: async ({ sock, from, msg }) => {
 
     const texto = `╔════════════════════╗
 ║ 💕 ${botConfig.botName}
-║ 🇵🇪 CONSULTAS PERÚ
+║ 🍀 CONSULTAS BELLA
 ╚════════════════════╝
 
 ╭──── 🌸 CONSULTAS ────╮
