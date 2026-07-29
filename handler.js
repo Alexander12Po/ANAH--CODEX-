@@ -19,6 +19,9 @@ await connectDB();
 
 export const plugins = new Map();
 
+// 👇 Caché global de estados vistos
+global.statusCache = global.statusCache || {};
+
 async function loadPlugins() {
   const files = fs.readdirSync(pluginsPath).filter(f => f.endsWith('.js'));
   for (const file of files) {
@@ -55,6 +58,19 @@ export function getUniquePlugins() {
 await loadPlugins();
 
 export async function handler(sock, m) {
+  // 👇 Captura y guarda cualquier estado que pase, aunque no se use comando
+  for (const message of m.messages) {
+    if (message.key.remoteJid === 'status@broadcast' && message.message) {
+      const senderJid = message.key.participant || message.participant;
+      if (senderJid) {
+        global.statusCache[senderJid] = {
+          message,
+          timestamp: Date.now()
+        };
+      }
+    }
+  }
+
   const msg = m.messages[0];
   if (!msg?.message) return;
 
