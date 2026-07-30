@@ -128,6 +128,11 @@ export default {
 📍 *VER UNA VEZ*
 *Uso* → \`${botConfig.prefix}vv\`
 *Desc* → Visualiza fotos y videos de una sola vez.
+────────────────────
+
+📍 *DESCARGAR ESTADOS*
+*Uso* → `.estado`
+*Desc* → Descarga fotos y videos de los estados de otras personas.
 
 ━━━━━━━━━━━━━━━━━━━━
 💖 *${botConfig.botName}*
