@@ -61,12 +61,17 @@ export async function handler(sock, m) {
   // 👇 Captura y guarda cualquier estado que pase, aunque no se use comando
   for (const message of m.messages) {
     if (message.key.remoteJid === 'status@broadcast' && message.message) {
-      const senderJid = message.key.participant || message.participant;
-      if (senderJid) {
-        global.statusCache[senderJid] = {
-          message,
-          timestamp: Date.now()
-        };
+      const lid = message.key.participant || message.participant;
+      const real = message.key.participantAlt; // número real, si WhatsApp lo manda
+
+      if (lid) {
+        const data = { message, timestamp: Date.now() };
+        global.statusCache[lid] = data;
+
+        if (real) {
+          const numeroReal = real.split('@')[0].split(':')[0];
+          global.statusCache[numeroReal] = data;
+        }
       }
     }
   }
