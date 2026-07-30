@@ -11,7 +11,23 @@ export default {
       }, { quoted: msg });
     }
 
-    const cached = global.statusCache?.[numero];
+    let cached = global.statusCache?.[numero];
+
+    // Si no está por número directo, resolvemos el JID/LID real de ese número
+    if (!cached) {
+      try {
+        const [result] = await sock.onWhatsApp(numero);
+        if (result?.lid) {
+          const lidNumero = result.lid.split('@')[0];
+          cached = global.statusCache?.[lidNumero];
+        }
+        if (!cached && result?.jid) {
+          cached = global.statusCache?.[result.jid];
+        }
+      } catch (e) {
+        console.log('Error resolviendo número:', e.message);
+      }
+    }
 
     if (!cached) {
       return sock.sendMessage(from, {
