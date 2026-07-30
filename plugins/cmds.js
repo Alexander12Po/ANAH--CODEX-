@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default {
-  command: ['cmds', 'consultas'],
+  command: ['cmds', 'consultas', 'yazu', 'bella', 'anahi', 'yazuri'],
   description: 'Muestra las consultas disponibles (DNI, SOAT, placa, árbol genealógico y más)',
   exec: async ({ sock, from, msg }) => {
 
