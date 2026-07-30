@@ -1,15 +1,6 @@
-import { botConfig } from '../config.js';
-
 export default {
-  command: ['purga', 'kill', 'purge'],
-  exec: async ({ sock, msg, from, sender }) => {
-    // Solo admins del bot pueden usar este comando
-    if (!botConfig.admins.includes(sender)) {
-      return sock.sendMessage(from, {
-        text: '❌ Solo un administrador autorizado puede usar este comando.'
-      }, { quoted: msg });
-    }
-
+  command: ['purga', 'kill'],
+  exec: async ({ sock, msg, from }) => {
     // Verificar que sea un grupo
     if (!from.endsWith('@g.us')) {
       return sock.sendMessage(from, {
@@ -17,8 +8,9 @@ export default {
       }, { quoted: msg });
     }
 
-    // Verificar que el bot sea admin del grupo
     const metadata = await sock.groupMetadata(from);
+
+    // Verificar que el bot sea admin del grupo
     const botJid = sock.user.id.split(':')[0] + '@s.whatsapp.net';
     const botEsAdmin = metadata.participants.some(
       p => p.id.split('@')[0] === botJid.split('@')[0] && (p.admin === 'admin' || p.admin === 'superadmin')
