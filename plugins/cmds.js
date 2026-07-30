@@ -131,7 +131,7 @@ export default {
 ────────────────────
 
 📍 *DESCARGAR ESTADOS*
-*Uso* → `.estado`
+*Uso* → \`.estado\`
 *Desc* → Descarga fotos y videos de los estados de otras personas.
 
 ━━━━━━━━━━━━━━━━━━━━
