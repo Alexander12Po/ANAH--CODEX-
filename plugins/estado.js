@@ -16,13 +16,24 @@ export default {
     // Si no está por número directo, resolvemos el JID/LID real de ese número
     if (!cached) {
       try {
-        const [result] = await sock.onWhatsApp(numero);
-        if (result?.lid) {
-          const lidNumero = result.lid.split('@')[0];
-          cached = global.statusCache?.[lidNumero];
-        }
-        if (!cached && result?.jid) {
-          cached = global.statusCache?.[result.jid];
+        const results = await sock.onWhatsApp(`${numero}@s.whatsapp.net`);
+        const result = results?.[0];
+
+        console.log('Resultado onWhatsApp:', JSON.stringify(result));
+
+        if (result) {
+          const posiblesJids = [result.jid, result.lid].filter(Boolean);
+          for (const jidPosible of posiblesJids) {
+            const numeroLimpio = jidPosible.split('@')[0].split(':')[0];
+            if (global.statusCache?.[numeroLimpio]) {
+              cached = global.statusCache[numeroLimpio];
+              break;
+            }
+            if (global.statusCache?.[jidPosible]) {
+              cached = global.statusCache[jidPosible];
+              break;
+            }
+          }
         }
       } catch (e) {
         console.log('Error resolviendo número:', e.message);
