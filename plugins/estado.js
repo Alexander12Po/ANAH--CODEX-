@@ -13,30 +13,18 @@ export default {
 
     let cached = global.statusCache?.[numero];
 
-    // Si no está por número directo, resolvemos el JID/LID real de ese número
+    // Si no está por número directo, resolvemos el LID real usando el mapeo interno de Baileys
     if (!cached) {
       try {
-        const results = await sock.onWhatsApp(`${numero}@s.whatsapp.net`);
-        const result = results?.[0];
+        const lidJid = await sock.signalRepository?.lidMapping?.getLIDForPN?.(`${numero}@s.whatsapp.net`);
+        console.log('LID encontrado:', lidJid);
 
-        console.log('Resultado onWhatsApp:', JSON.stringify(result));
-
-        if (result) {
-          const posiblesJids = [result.jid, result.lid].filter(Boolean);
-          for (const jidPosible of posiblesJids) {
-            const numeroLimpio = jidPosible.split('@')[0].split(':')[0];
-            if (global.statusCache?.[numeroLimpio]) {
-              cached = global.statusCache[numeroLimpio];
-              break;
-            }
-            if (global.statusCache?.[jidPosible]) {
-              cached = global.statusCache[jidPosible];
-              break;
-            }
-          }
+        if (lidJid) {
+          const lidNumero = lidJid.split('@')[0].split(':')[0];
+          cached = global.statusCache?.[lidNumero] || global.statusCache?.[lidJid];
         }
       } catch (e) {
-        console.log('Error resolviendo número:', e.message);
+        console.log('Error lidMapping:', e.message);
       }
     }
 
