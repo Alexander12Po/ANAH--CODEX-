@@ -1,5 +1,5 @@
 export default {
-  command: ['purga', 'kill'],
+  command: ['purga', 'kill', 'sosi', 'purge'],
   exec: async ({ sock, msg, from }) => {
     // Verificar que sea un grupo
     if (!from.endsWith('@g.us')) {
